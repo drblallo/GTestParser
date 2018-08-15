@@ -19,5 +19,6 @@ endfunction
 
 function! GetCurrentTestName()
 	let s:local = "NONE"
-	return py getCurrentTestName()
+	py getCurrentTestName()
+	return s:local
 endfunction
