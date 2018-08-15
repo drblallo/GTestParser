@@ -1,6 +1,6 @@
 
 python import sys
-pyfile ./python/GTestParser.py
+pyfile expand('<sfile>:p:h')/python/GTestParser.py
 
 function! RunOnBuffer()
     py runOnBuffer()
