@@ -112,6 +112,8 @@ def findTestDeclaration():
             index = num
             break
 
+
+    return buffer[index]
     while index > 0:
         if re.match("TEST(_F)?\s*\(.*,.*\)", buffer[index]):
             return buffer[index]
