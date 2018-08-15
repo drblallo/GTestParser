@@ -124,7 +124,7 @@ def findTestDeclaration():
 def getCurrentTestName():
     s = findTestDeclaration()
     
-    s = s[s.find("("):s:find(")")]
+    s = s[s.find("("):s.find(")")]
     s = s.split(",")
 
     vim.command("let s:local = " + s[0])
