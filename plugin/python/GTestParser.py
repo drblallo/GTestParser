@@ -114,7 +114,7 @@ def findTestDeclaration():
 
     return None
 
-def getCurrentTestName()
+def getCurrentTestName():
     s findTestDeclaration
     
     s = s[s.find("("):s:find(")")]
