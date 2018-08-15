@@ -115,7 +115,7 @@ def findTestDeclaration():
     return None
 
 def getCurrentTestName():
-    s findTestDeclaration
+    s = findTestDeclaration()
     
     s = s[s.find("("):s:find(")")]
     s = s.split(",")
