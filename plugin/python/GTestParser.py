@@ -104,6 +104,23 @@ def printTable(onlyPrintFailure, buffer):
             if val2[0]:
                 writeTestResult(test, val2[0], val2[1], buffer)
 
+def findTestDeclaration():
+    buffer = vim.current.buffer
+    index = buffer.index(vim.current.line)
+    while index > 0:
+        if re.match("TEST(_F)?\s*\(.*,.*\)", buffer[index]):
+            return buffer[index]
+        index = index - 1
+
+    return None
+
+def getCurrentTestName()
+    s findTestDeclaration
+    
+    s = s[s.find("("):s:find(")")]
+    s = s.split(",")
+
+    vim.command("let s:local = " + s[0])
 
 def runOnBuffer():
     global startedParsing
