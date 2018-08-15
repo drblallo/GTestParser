@@ -127,7 +127,7 @@ def getCurrentTestName():
     s = s[s.find("("):s.find(")")]
     s = s.split(",")
 
-    vim.command("let s:local = " + s[0])
+    vim.command("let s:local = '%s'"% s[0])
 
 def runOnBuffer():
     global startedParsing

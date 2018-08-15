@@ -17,8 +17,3 @@ function! ApplyTestSyntax()
 	hi success ctermfg=34
 endfunction
 
-function! GetCurrentTestName()
-	let s:local = "NONE"
-	py getCurrentTestName()
-	return s:local
-endfunction
