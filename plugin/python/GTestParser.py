@@ -106,7 +106,12 @@ def printTable(onlyPrintFailure, buffer):
 
 def findTestDeclaration():
     buffer = vim.current.buffer
-    index = buffer.index(vim.current.line)
+    index = 0
+    for num in range(0, len(buffer)):
+        if vim.current.line == buffer[num]:
+            index = num
+            break
+
     while index > 0:
         if re.match("TEST(_F)?\s*\(.*,.*\)", buffer[index]):
             return buffer[index]

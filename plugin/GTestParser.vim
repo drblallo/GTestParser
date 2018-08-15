@@ -6,7 +6,7 @@ function! RunOnBuffer()
     py runOnBuffer()
 endfunction
 
-command RunOnBuffer call RunOnBuffer()
+command! RunOnBuffer call RunOnBuffer()
 
 function! ApplyTestSyntax()
 
