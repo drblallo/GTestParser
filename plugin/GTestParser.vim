@@ -75,3 +75,22 @@ function! GTestOption(allSuit)
 
 	endif
 endfunction
+
+exec "pyfile " . expand('<sfile>:p:h') . "/python/AsanParser.py"
+
+function! AsanParseBuffer()
+	py parseBuffer()
+	call ApplyAsanSyntax()
+endfunction
+
+function! ApplyAsanSyntax()
+	hi fnane ctermfg=11
+
+	syntax match unreachable '-\t.*'
+	syntax match methodName '\s*=>\s*.*\s*'
+	syntax match reachable '+\t.*:\d*'
+
+	hi reachable ctermfg=27
+	hi methodName ctermfg=76
+	hi unreachable ctermfg=57
+endfunction

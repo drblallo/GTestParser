@@ -140,3 +140,5 @@ def runOnBuffer():
         parseLine(line)
     del vim.current.buffer[0:len(vim.current.buffer)]
     printTable(False, vim.current.buffer)
+
+
