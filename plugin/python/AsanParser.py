@@ -2,15 +2,23 @@ import re
 from vim import *
 from os.path import expanduser
 
+knowLileRegex = r"^\s*#(\d+)\s+(.+)\s+([^\s\(\)]+)\s*$"
+unkownLileRegex = r"^\s*#(\d+)\s+(.+)\s+\((\S+)\)\s*$"
+functionNameRegex = r"^\s*0x[\d\w]+\s+(.+)\s*$"
 
 class StackLine:
 
-    def __init__(self, sourceFile, function, line):
+    def __init__(self, sourceFile, function, line, known):
         self.sourceFile = sourceFile.replace(vim.eval("getcwd()"), ".")
         self.sourceFile = self.sourceFile.replace(expanduser("~"), "~")
         self.function = function
+        self.simplifyFunctionName()
         self.line = line
+        self.known = known
 
+    def simplifyFunctionName(self):
+        self.function = re.match(functionNameRegex, self.function).group(1)
+    
     def write(self):
         if self.function != "":
             return "\t+" + self.function + "\n\t\t" + self.sourceFile 
@@ -19,12 +27,11 @@ class StackLine:
     def asVector(self):
         vec = []
 
-        if self.function != "":
+        if self.known == True:
             vec.append("+\t" + self.sourceFile)
-            vec.append("\t=> " + self.function)
         else:
             vec.append("-\t" + self.sourceFile)
-            vec.append("\t=> ??????????")
+        vec.append("\t=> " + self.function)
         return vec
 
 
@@ -76,7 +83,7 @@ class AsanParser:
         self.buffer.append("")
 
         for reg in self.regitries:
-            if reg.description != "NO DESC":
+            if len(reg.stackTrace) != 0:
                 for line in reg.asVector():
                     self.buffer.append(line)
                 self.buffer.append("")
@@ -87,8 +94,8 @@ class AsanParser:
         self.currentRegistry = LeakRegistry()
 
     def parseUnkowLine(self, parseUnkowLine):
-        divided = re.match(r"\s*#(\d+)\s+(\w+)\s+(in\s+.+\s+)?\((\S+)\+\w+\)\s*", parseUnkowLine)
-        val = StackLine(divided.group(divided.lastindex), "", divided.group(1))
+        divided = re.match(unkownLileRegex, parseUnkowLine)
+        val = StackLine(divided.group(3), divided.group(2), divided.group(1), False)
         self.currentRegistry.stackTrace.append(val)
 
     def createReport(self):
@@ -100,17 +107,16 @@ class AsanParser:
         report = report +"-----\n" 
 
         for reg in self.regitries:
-            if reg.description != "NO DESC":
+            if len(reg.stackTrace) != 0:
                 report = report + reg.write() + "\n"
         return report
 
     def parseKnownLine(self, line):
-        divided = re.match(r"\s*#(\d+)\s(\w+)\s+in\s+(.+)\s+([^\s:]+:\d+)(:\d+)?\s*", line) 
+        divided = re.match(knowLileRegex, line) 
         stackTraceCount = divided.group(1)
-        pointer = divided.group(2)
-        functionName = divided.group(3)
-        file = divided.group(4)
-        val = StackLine(file, functionName, stackTraceCount)
+        functionName = divided.group(2)
+        file = divided.group(3)
+        val = StackLine(file, functionName, stackTraceCount, True)
         self.currentRegistry.stackTrace.append(val)
 
     def parseLine(self, line):
@@ -133,11 +139,11 @@ class AsanParser:
         if re.match(r"==\.*", line):
             return
 
-        if re.match(r"\s*#\d+\s\w+\s+in\s+.+\s+[^\s:]+:\d+(:\d+)?\s*", line):
+        if re.match(knowLileRegex, line):
             self.parseKnownLine(line)
             return
 
-        if re.match(r"\s*#\d+\s+\w+\s+(in\s+.+\s+)?\(\S+\+\w+\)\s*", line):
+        if re.match(unkownLileRegex, line):
             self.parseUnkowLine(line)
             return
 

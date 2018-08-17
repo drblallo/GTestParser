@@ -88,7 +88,7 @@ function! ApplyAsanSyntax()
 
 	syntax match unreachable '-\t.*'
 	syntax match methodName '\s*=>\s*.*\s*'
-	syntax match reachable '+\t.*:\d*'
+	syntax match reachable '+\t.*'
 
 	hi reachable ctermfg=27
 	hi methodName ctermfg=76
