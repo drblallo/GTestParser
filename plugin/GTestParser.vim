@@ -13,9 +13,10 @@ function! ApplyTestSyntax()
 	syntax keyword failed KO
 	syntax keyword success OK
 
-	hi failed ctermfg=1
-	hi success ctermfg=34
 endfunction
+
+hi failed ctermfg=1
+hi success ctermfg=34
 
 function! GetNearestTestLine()
 
@@ -84,13 +85,12 @@ function! AsanParseBuffer()
 endfunction
 
 function! ApplyAsanSyntax()
-	hi fnane ctermfg=11
 
 	syntax match unreachable '-\t.*'
 	syntax match methodName '\s*=>\s*.*\s*'
 	syntax match reachable '+\t.*'
 
-	hi reachable ctermfg=27
-	hi methodName ctermfg=76
-	hi unreachable ctermfg=57
 endfunction
+hi reachable ctermfg=69
+hi methodName ctermfg=70
+hi unreachable ctermfg=57

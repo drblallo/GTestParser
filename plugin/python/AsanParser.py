@@ -132,11 +132,11 @@ class AsanParser:
             self.extraStuff.append(line)
             return
 
-        if re.match(r"SUMMARY: \.*", line):
+        if re.match(r"SUMMARY: \.*", line) :
             self.ended = True
             return
         
-        if re.match(r"==\.*", line):
+        if re.match(r"==\.*", line)or re.match(r"^\-+\s*$", line):
             return
 
         if re.match(knowLileRegex, line):
