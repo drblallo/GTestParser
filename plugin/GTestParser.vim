@@ -1,9 +1,9 @@
 
-python import sys
-exec "pyfile " . expand('<sfile>:p:h') . "/python/GTestParser.py"
+python3 import sys
+exec "py3file " . expand('<sfile>:p:h') . "/python/GTestParser.py"
 
 function! RunOnBuffer()
-    py runOnBuffer()
+    py3 runOnBuffer()
 endfunction
 
 command! RunOnBuffer call RunOnBuffer()
@@ -77,10 +77,10 @@ function! GTestOption(allSuit)
 	endif
 endfunction
 
-exec "pyfile " . expand('<sfile>:p:h') . "/python/AsanParser.py"
+exec "py3file " . expand('<sfile>:p:h') . "/python/AsanParser.py"
 
 function! AsanParseBuffer()
-	py parseBuffer()
+	py3 parseBuffer()
 	call ApplyAsanSyntax()
 endfunction
 
